@@ -1,0 +1,679 @@
+\documentclass[draft]{article}
+\usepackage[a4paper,left=2cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
+
+\setlength{\parindent}{0pt} % no indent
+% \hspace{2em} : make indent
+
+\usepackage{amsmath, amssymb, bm}
+\usepackage[makeroom]{cancel}
+
+\begin{document}
+
+\section*{blank page template}
+...
+\clearpage
+% --- End of page --- %
+
+\appendix
+\section*{Appendix}
+...
+\clearpage
+% --- End of page --- %
+
+
+
+
+
+
+
+
+
+
+% Finish A.2 section. So, please do not change e.q. labeling
+\subsection*{A.1 Method of Characteristics}
+\renewcommand{\theequation}{A.1.\arabic{equation}}
+\setcounter{equation}{0}
+
+$f_i = f_i(\bm{x}, t), \quad \Omega_i = \Omega_i(\bm{x}, t)$ 
+\begin{equation}
+	\frac{\partial f_i}{\partial t} + c_{i \alpha} \frac{\partial f_i}{\partial x_\alpha} = \Omega_i \label{A.1.1}
+\end{equation}
+Assume $\bm{x} = \bm{x}(\zeta) \text{ and } t = t(\zeta), \quad f_i(\bm{x}, t) \rightarrow f_i(\bm{x}(\zeta), t(\zeta))$. Total derivative
+
+\begin{equation}
+	\frac{d f_i}{d \zeta} = \frac{\partial f_i}{\partial t}\frac{d t}{d \zeta} + \frac{\partial f_i}{\partial x_\alpha}\frac{d x_\alpha}{d \zeta} \label{A.1.2}
+\end{equation}
+(\ref{A.1.2}) = (\ref{A.1.1}) if
+\begin{equation}
+	\frac{d t}{d \zeta} = 1, \quad \frac{d x_\alpha}{d \zeta} = c_{i \alpha} \label{A.1.3}
+\end{equation}
+Now (\ref{A.1.2}) becomes
+\begin{equation}
+	\frac{d f_i}{d \zeta} = \Omega_i \label{A.1.4}
+\end{equation}
+Integrate (\ref{A.1.3}) with the initial conditions $\bm{x}(\zeta=0) = \bm{x}_0, \, t(\zeta=0) = t_0$
+\begin{equation}
+	t(\zeta) = \zeta + t_0, \quad x_\alpha(\zeta) = c_{i \alpha} \zeta + x_0
+\end{equation}
+Integrate (\ref{A.1.4}) on both sides from $\zeta = 0$ to $\zeta = \Delta t$
+\begin{align}
+	\int_{0}^{\Delta t} \frac{d f_i(\bm{x}(\zeta), t(\zeta))}{d \zeta} \, d \zeta &= \int_{0}^{\Delta t} \Omega_i(\bm{x}(\zeta), t(\zeta)) \, d \zeta \notag \\
+	f_i(\bm{x}(\Delta t), t(\Delta t)) - f_i(\bm{x}(0), t(0)) &= \int_{0}^{\Delta t} \Omega_i(\bm{x_0} + \bm{c}_i \zeta, t_0 + \zeta) \, d \zeta \notag \\
+	f_i(\bm{x}_0 + \bm{c}_i \Delta t, t_0 + \Delta t) - f_i(\bm{x}_0, t_0) &= \int_{0}^{\Delta t} \Omega_i(\bm{x_0} + \bm{c}_i \zeta, t_0 + \zeta) \, d \zeta
+\end{align}
+The point $(\bm{x}_0, t_0)$ is arbitrary. We can more generally write
+\begin{equation}
+		f_i(\bm{x} + \bm{c}_i \Delta t, t + \Delta t) - f_i(\bm{x}, t) = \int_{0}^{\Delta t} \Omega_i(\bm{x} + \bm{c}_i \zeta, t + \zeta) \, d \zeta
+\end{equation}
+The integral on the right-hand side may be approximated using numerical methods.
+
+\vspace{1cm}
+{\large\textbf{First-Order Discretization}}
+
+Using \textit{Euler method}:
+\begin{equation}
+	f_i(\bm{x} + \bm{c}_i \Delta t, t + \Delta t) - f_i(\bm{x}, t) = \Delta t \Omega_i(\bm{x}, t) \label{A.1.8}
+\end{equation}
+(\ref{A.1.8}) is a \textit{first-order accuracy} in time. We shall see later that it is actually \textit{second-order accuracy} in time.
+
+\vspace{1cm}
+{\large \textbf{Example:}} For BGK collision operator
+\begin{equation*}
+	\Omega_i(\bm{x}, t) = -\frac{1}{\tau}(f_i(\bm{x}, t) - f_i^{\, eq}(\bm{x}, t))
+\end{equation*}
+
+The first-order discretization is given:
+\begin{equation}
+	f_i(\bm{x} + \bm{c}_i \Delta t, t + \Delta t) = f_i(\bm{x}, t) - \frac{\Delta t}{\tau} (f_i(\bm{x}, t) - f_i^{\, eq} (\bm{x}, t))
+\end{equation}
+\clearpage
+% --- End of page --- %
+
+{\large\textbf{Second-Order Discretization}}
+
+Using \textit{trapezoidal rule}:
+\begin{equation}
+	f_i(\bm{x} + \bm{c}_i \Delta t, t + \Delta t) - f_i(\bm{x}, t) = \Delta t \left ( \frac{\Omega_i(\bm{x}, t) + \Omega_i(\bm{x} + \bm{c}_i \Delta t, t + \Delta t)}{2} \right ) \label{A.1.10}
+\end{equation}
+(\ref{A.1.10}) is implicit since $\Omega_i(\bm{x} + \bm{c}_i \Delta t, t + \Delta t$ depends on $f_i$ at $t + \Delta t$. It is possible to transform into explicit using a change of variables [\ref{ref:dellar}] $f_i \rightarrow \bar{f}_i$. Introducting a new distribution function $\bar{f}_i$ defined by
+\begin{equation}
+	\bar{f}_i(\bm{x}, t) \equiv f_i(\bm{x}, t) - \frac{\Omega_i \Delta t}{2} \label{A.1.11}
+\end{equation} 
+
+Substitute (\ref{A.1.11}) into (\ref{A.1.10})
+
+\begin{align}
+	\text{\small $\left [ \bar{f}_i(\bm{x} + \bm{c}_i \Delta t, t + \Delta t) + \frac{\Delta t}{2}\Omega_i(\bm{x} + \bm{c}_i \Delta t, t + \Delta t) \right ] - \left [ \bar{f}_i(\bm{x}, t) + \frac{\Delta t}{2}\Omega_i(\bm{x}, t) \right ]$} &= \text{\small $\Delta t \left ( \frac{\Omega_i(\bm{x}, t) + \Omega_i(\bm{x} + \bm{c}_i \Delta t, t + \Delta t)}{2} \right )$} \notag \\
+	\notag \\
+	\bar{f}_i(\bm{x} + \bm{c}_i \Delta t, t + \Delta t) - \bar{f}_i(\bm{x}, t) &= \Delta t \Omega_i(\bm{x}, t) \label{A.1.12}
+\end{align}
+
+Note that all moments of this new $\bar{f}_i$ has the same moments as $f_i$ since $\Omega_i$ has to be conserved.
+
+\begin{align*}
+	\sum_i \bar{f}_i &= \sum_i f_i = \rho \\
+	\sum_i \bar{f}_i c_i &= \sum_i f_i c_i = \rho \bm{u} \\
+	\vdots
+\end{align*}
+
+{\large \textbf{Example:}} The second-order discretization with BGK collsion operator, equation (\ref{A.1.11}) is
+\begin{equation}
+	\bar{f}_i(\bm{x}, t) = f_i(\bm{x}, t) + \frac{\Delta t}{2 \tau} (f_i(\bm{x}, t) - f_i^{\, eq}(\bm{x}, t)) \label{A.1.13}
+\end{equation}
+and equation (\ref{A.1.12}) becomes
+\begin{equation}
+	\bar{f}_i(\bm{x} + \bm{c}_i \Delta t, t + \Delta t) = \bar{f}_i(\bm{x}, t) - \frac{\Delta t}{\tau} (f_i(\bm{x}, t) - f_i^{eq}(\bm{x}, t)) \label{A.1.14}
+\end{equation}
+Rearranging terms in (\ref{A.1.13}) yields
+\begin{equation*}
+	f_i(\bm{x}, t) = \left ( \frac{2\tau}{2\tau + \Delta t} \right ) \bar{f}_i(\bm{x}, t) + \left ( \frac{\Delta t}{2\tau + \Delta t} \right ) f_i^{\, eq} (\bm{x}, t)
+\end{equation*}
+Substitute $f_i(\bm{x}, t)$ into (\ref{A.1.14}), we get the lattice-Boltzmann equation with BGK collision operator, also called (\textit{LBGK}) equation: 
+\begin{equation}
+	\bar{f}_i(\bm{x} + \bm{c}_i \Delta t, t + \Delta t) = \bar{f}_i(\bm{x}, t) - \frac{\Delta t}{\bar{\tau}}(\bar{f}_i(\bm{x}, t) - f_i^{\, eq}(\bm{x}, t)), \quad \bar{\tau} = \tau + \frac{\Delta t}{2}.
+\end{equation}
+
+\clearpage
+% --- End of page --- %
+
+\subsubsection*{References}
+\begin{enumerate}
+	\item \label{ref:dellar} P. Dellar, Phys. Rev. E 64(3) (2001)
+\end{enumerate}
+\clearpage
+% --- End of page --- %
+
+
+
+
+
+
+
+
+
+
+\subsection*{\huge A.2 Hermite polynomials}
+\vspace*{0.5cm}
+\subsubsection*{\large One dimensional Hermite polynomials}
+\renewcommand{\theequation}{A.2.\arabic{equation}}
+\setcounter{equation}{0}
+
+Generating function definition:
+
+\begin{equation}
+	\omega(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2 / 2}
+\end{equation}
+
+Hermite polynomials of \textit{n}-th order are defined as:
+
+\begin{equation}
+	H^{(n)} (x) = (-1)^{n} \frac{1}{\omega(x)} \frac{\text{d}^n}{\text{d}x^n} \omega(x)
+\end{equation}
+
+where $n = 0, 1, 2, \dots$
+
+\paragraph*{Example: \textnormal{The first six of these polynomials are}}
+\begin{align*}
+	H^{(0)} (x) &= 1,              & H^{(1)} (x) &= x \\
+	H^{(2)} (x) &= x^2 - 1,        & H^{(3)} (x) &= x^3 - 3x \\
+	H^{(4)} (x) &= x^4 - 6x^2 + 3, & H^{(5)} (x) &= x^5 - 10x^3 + 15x \\
+\end{align*}
+
+\subsubsection*{Orthogonality of Hermite polynomials}
+\begin{equation}
+	\int_{-\infty}^{+\infty} \omega(x) H^{(n)} (x) H^{(m)} (x) \, \text{d}x = n! \delta_{nm} \label{1d_hermite_othogonal}
+\end{equation}
+
+Proof:
+
+\begin{align*}
+	I &= \int_{-\infty}^{+\infty} \omega(x) H^{(n)} (x) H^{(m)} (x) \, \text{d}x \\
+	  &= \int_{-\infty}^{+\infty} \omega \left [ (-1)^{n} \frac{1}{\omega} \frac{\text{d}^n}{\text{d}x^n} \omega \right ] H^{(m)} \, \text{d}x \\
+	  &=(-1)^n \int_{-\infty}^{+\infty} H^{(m)} \frac{\text{d}}{\text{d}x}\frac{\text{d}^{n-1}}{\text{d}x^{n-1}} \omega \, \text{d}x \\
+\intertext{using integration by parts: $u = H^{(m)}, \quad \text{d}v = \frac{\text{d}^{n-1}}{\text{d}x^{n-1}}\omega \, \text{d}x$}
+	  &= (-1)^n \left [ \left . H^{(m)} \frac{\text{d}^{n-1}}{\text{d}x^{n-1}}\omega \right |_{-\infty}^{+\infty} - \int_{-\infty}^{+\infty} \frac{\text{d}^{n-1}}{\text{d}x^{n-1}}\omega \frac{\text{d}}{\text{d}x} H^{(m)} \, \text{d}x \right ] \\
+	  &= (-1)^n (-1) \int_{-\infty}^{+\infty} \frac{\text{d}^{n-1}}{\text{d}x^{n-1}}\omega \frac{\text{d}}{\text{d}x} H^{(m)} \, \text{d}x \\
+\intertext{repeat integration by parts until we get}
+    I &= (-1)^n (-1)^n \int_{-\infty}^{+\infty} \omega \, \frac{\text{d}^n}{\text{d}x^n} H^{(m)} \, \text{d}x = \int_{-\infty}^{+\infty} \omega \, \frac{\text{d}^n}{\text{d}x^n} H^{(m)} \, \text{d}x.
+\end{align*}
+\clearpage
+
+% Continue next page
+
+For case $n > m$, the $m$-\textit{th} order derivative exceeds the degree of the polynomial, causing the integral to vanish
+
+$$
+I = \int_{-\infty}^{\infty} \omega \frac{\text{d}^n}{\text{d}x^n} H^{(m)} \, \text{d}x = \int_{-\infty}^{\infty} \omega \frac{\text{d}^n}{\text{d}x^n} (x^m + \text{lower polynomial degrees}) \, \text{d}x = 0.
+$$
+
+For case $n = m$:
+\begin{align*}
+	I &= \int_{-\infty}^{+\infty} \omega \, \frac{\text{d}^n}{\text{d}x^n} H^{(n)} \, \text{d}x \\
+	  &= \int_{-\infty}^{+\infty} \omega \, \frac{\text{d}^n}{\text{d}x^n} (x^n + \text{lower polynomial degrees}) \, \text{d}x \\
+	  &= \int_{-\infty}^{+\infty} \omega n! \, \text{d}x \\
+	  &= n!
+\end{align*}
+
+Thus, in general
+$$
+\int_{-\infty}^{+\infty} \omega(x) H^{(n)} (x) H^{(m)} (x) \, \text{d}x = n! \delta_{nm} \qquad \square
+$$
+
+\vspace*{0.5cm}
+\subsubsection*{\large Hermite series expansion of a function}
+
+A function, $f(x)$, can be expanded as an infinite sum of Hermite polynomials as:
+
+\begin{equation}
+	f(x) = \omega(x) \sum_{n=0}^{\infty} \frac{1}{n!} a^{(n)} H^{(n)} (x) \label{f(x)-hermite-1d}
+\end{equation}
+
+with corresponding coefficients:
+\begin{equation}
+	a^{(n)} = \int_{-\infty}^{+\infty} f(x) H^{(n)}(x) \, \text{d}x
+\end{equation}
+
+Proof of how to find the coefficient $a^{(n)}$:
+
+
+multiplying by $H^{(m)}$ on both sides of e.q. (\ref{f(x)-hermite-1d}), then integrate with respect to d$x$
+\begin{align*}
+    \int_{-\infty}^{+\infty} f(x) H^{(m)}(x) \, \text{d}x &= \sum_{n=0}^{\infty} \frac{1}{n!} a^{(n)} \int_{-\infty}^{+\infty} \omega(x) H^{(n)}(x) H^{(m)}(x) \, \text{d}x \\
+                                                          &= \sum_{n=0}^{\infty} \frac{1}{n!} a^{(n)} \cdot n! \delta_{nm} \\
+                                                  a^{(n)} &= \int_{-\infty}^{+\infty} f(x) H^{(n)}(x) \, \text{d}x \qquad \square
+\end{align*}
+
+\clearpage
+% --- End of page --- %
+
+\subsubsection*{\large Hermite polynomials in \textit{d}-dimensions}
+Generalize coordinates:
+$$
+\bm{x} = \begin{bmatrix}
+	x_1 \\
+	\vdots \\
+	x_d
+\end{bmatrix}
+,\qquad
+\nabla = \begin{bmatrix}
+	{\frac{\partial}{\partial x_1} \bm{\hat{e}_1}} \\
+	\vdots \\
+	{\frac{\partial}{\partial x_d} \bm{\hat{e}_d}} 
+\end{bmatrix}
+$$
+
+Generating function:
+\begin{equation}
+	\omega(\bm{x}) = \frac{1}{(2\pi)^{\frac{d}{2}}}e^{\frac{-\bm{x}^2}{2}}
+\end{equation}
+
+note that $\omega(\bm{x})$ is just simply a product of 1d-generating functions
+\begin{equation}
+	\omega(\bm{x}) = \prod_{i=1}^{d} \frac{1}{\sqrt{2\pi}}e^{-x_d^2 / 2} = \prod_{i=1}^{d} \omega(x_i). \label{product_omega} 
+\end{equation}
+
+\textit{d}-dimensional Hermite polynomials of \textit{n}-th order are defined as
+\begin{equation}
+	\bm{H}^{(n)}(\bm{x}) = (-1)^{n}\frac{1}{\omega(\bm{x})}\bm{\nabla}^{(n)} \, \omega(\bm{x})
+\end{equation}
+
+where $\bm{\nabla}^{(n)} = \underbrace{\nabla \otimes\dots\otimes  \nabla}_{\text{\textit{n} times}} \, $ is tensor outer product.
+
+$\bm{H}^{(n)}$ and $\bm{\nabla}^{(n)}$ are symmetric tensors of rank \textit{n} and have $d^n$ components i.e. $H^{(n)}_{\alpha_1\dots\alpha_n}$ and $ \nabla^{(n)}_{\alpha_1\dots\alpha_n} = \frac{\partial}{\partial x_{\alpha_1}} \dots \frac{\partial}{\partial x_{\alpha_n}}$ where $\alpha_1, \dots ,\alpha_n \in \{ x_1, \dots ,x_d \}$ be tensor indices.
+
+\paragraph*{Example: \textnormal{$d = 2, (x, y)$. The first second order $(n=0,1,2)$ are}}
+for $n=0$
+$$
+\bm{H}^{(0)} = 1
+$$
+
+for $n=1$
+$$
+\bm{H^{(1)}} = \begin{bmatrix}
+	H^{(1)}_{x} \\
+	H^{(1)}_{y} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+	x \\
+	y \\
+\end{bmatrix}
+$$
+for $n=2$
+$$
+\bm{H}^{(2)} = \begin{bmatrix}
+	H^{(2)}_{xx} & H^{(2)}_{xy} \\
+	H^{(2)}_{xy} & H^{(2)}_{yy} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+	x^2 - 1 & xy \\
+	xy & y^2 - 1 \\
+\end{bmatrix}
+$$
+
+\vspace*{0.5cm}
+Likewise, a component of $\bm{H}^{(n)} (\bm{x})$ is a product of 1d-Hermite polynomials
+\begin{align}
+	H^{(n)}_{\bm{\alpha}}(\bm{x}) &= (-1)^{n} \frac{1}{\omega (\bm{x})} \nabla^{(n)}_{\bm{\alpha}} \omega{(\bm{x})} \notag \\ 
+											  &= \left ( \prod_{i=1}^{d} (-1)^{n_i} \right ) \left ( \prod_{i=1}^{d} \frac{1}{\omega(x_i)} \right ) \left ( \prod_{i=1}^{d} \frac{\partial^{n_i}}{\partial x_i^{n_i}} \omega(x_i) \right ) \notag \\
+										      &= \prod_{i=1}^{d} (-1)^{n_i} \frac{1}{\omega(x_i)} \frac{\partial^{n_i}}{\partial x_i^{n_i}} \omega(x_i) \notag \\
+	H^{(n)}_{\bm{\alpha}}(\bm{x}) &= \prod_{i=1}^{d} H^{(n_i)} (x_i)
+\end{align}
+
+where $\bm{\alpha} = \alpha_1 \dots \alpha_n$ is a compact indices.
+
+The $n_i$ is a number of occurrences for each dimension in $\bm{\alpha}$ and satisfying $\sum_{i=1}^{d} n_i = n$.
+
+\clearpage
+% --- End of page --- %
+
+\paragraph*{Example: \textnormal{$d = 3, (x, y, z)$. Find $H^{(3)}_{xxy}$}}
+
+\vphantom{}
+\vspace*{0.5cm}
+
+\textbf{Step 1: Identify indices}
+$$
+\bm{\alpha} = xxy
+$$
+
+\textbf{Step 2: Calculate $n_i$}
+$$
+n_x = 2, \quad n_y = 1, \quad n_z = 0
+$$
+
+\textbf{Step 3: Calculate $H^{(3)}_{xxy}$}
+$$
+H^{(3)}_{xxy} = H^{(2)}_{xx} H^{(1)}_{y} = (x^2-1)(y) = x^2y-y
+$$
+
+\vspace*{0.5cm}
+\subsubsection*{\large Orthogonality of \textit{d}-dimensional Hermite polynomials}
+\begin{equation}
+	I = \int_{-\infty}^{+\infty} \omega(\bm{x}) H^{(n)}_{\bm{\alpha}}(\bm{x}) H^{(m)}_{\bm{\beta}}(\bm{x}) \, \text{d}^d x = \prod_{i=1}^{d} n_i! \delta_{nm} \delta_{\bm{\alpha} \bm{\beta}} \label{product_hermite}
+\end{equation}
+
+where $\bm{\alpha} = \alpha_1 \dots \alpha_n$ and $\bm{\beta} = \beta_1 \dots \beta_m$ are compact indices. The $\delta_{\bm{\alpha} \bm{\beta}}$ is a generalize Kronecker symbol which is 1 only if $\bm{\alpha}$ is a permutation of $\bm{\beta}$ and 0 otherwise. For instance $\bm{\alpha} = xxy$ is a permutation of $xyx, yxx$ and $xxy$. 
+
+\vspace*{0.5cm}
+Proof:
+\begin{align*}
+	I &= \int_{-\infty}^{+\infty} \omega(\bm{x}) H^{(n)}_{\bm{\alpha}}(\bm{x}) H^{(m)}_{\bm{\beta}}(\bm{x}) \, \text{d}^d x \\
+	\intertext{using identities from (\ref{product_omega}) and (\ref{product_hermite})}
+	  &= \int_{-\infty}^{+\infty} \left ( \prod_{i=1}^{d} \omega(x_i) \right ) \left ( \prod_{i=1}^{d} H^{(n_i)}(x_i) \right ) \left ( \prod_{i=1}^{d} H^{(m_i)}(x_i) \right ) \left ( \prod_{i=1}^{d} \text{d}x_i \right ) \\
+	  &= \prod_{i=1}^{d} \left [ \int_{-\infty}^{+\infty} \omega(x_i)H^{(n_i)}(x_i)H^{(m_i)}(x_i)\text{d}x_i \right ]
+\end{align*}
+
+applying (\ref{1d_hermite_othogonal}) to [...]
+
+\begin{equation}
+	I = \prod_{i=1}^{d} n_i! \delta_{n_im_i} \label{first_form}
+\end{equation}
+
+The (\ref{first_form}) can we written in a more proper way as
+
+\begin{equation}
+	I = \prod_{i=1}^{d} n_i! \delta_{nm} \delta_{\bm{\alpha} \bm{\beta}} \label{second_form}
+\end{equation}
+
+\clearpage
+% --- End of page --- %
+
+\paragraph*{Examples: $d=3, \, (x,y,z)$}
+
+\begin{itemize}
+	\item[1.] Find $\int_{-\infty}^{+\infty} \omega(\bm{x}) H^{(2)}_{xx} H^{(3)}_{yyy} \, \text{d}^3 x$ using (\ref{first_form})
+	
+	          \textit{Solution}:
+	          
+	          \hspace{2em} From the problem, we found that $n_x = 2, n_y = 0, n_z = 0$ and $m_x = 0, m_y = 3, m_z = 0$
+	          
+	          \hspace{2em} 
+	          \begin{align*}
+	          \int_{-\infty}^{+\infty} \omega(\bm{x}) H^{(2)}_{xx} H^{(3)}_{yyy} \, \text{d}^3 x &= \prod_{i=1}^{3} n_i! \delta_{n_i m_i} \\
+	          	                                                                                 &= 2! \cdot 0! \cdot 0! \cdot \delta_{20} \cdot \delta_{03} \cdot \delta_{00} \\
+	          	                                                                                 &= 2 \cdot 1 \cdot 1 \cdot 0 \cdot 0 \cdot 1 \\
+	          	                                                                                 &= 0
+	          \end{align*}
+	          
+	\item[2.] Find $\int_{-\infty}^{+\infty} \omega(\bm{x}) H^{(3)}_{yyz} H^{(3)}_{yzy} \, \text{d}^3 x$ using (\ref{second_form})
+	
+		      \textit{Solution}:
+	
+			  \hspace{2em} $\bm{\alpha} = yyz$ is a permutation of $\bm{\beta} = yzy$ and both has the same order $n = m$
+	
+	          \hspace{2em} 
+	          \begin{align*}
+	          \int_{-\infty}^{+\infty} \omega(\bm{x}) H^{(3)}_{yyz} H^{(3)}_{yzy} \, \text{d}^3 x &= \prod_{i=1}^{3} n_i! \\
+		                                                                                          &= 0! \cdot 2! \cdot 1! \\
+		                                                                                          &= 2
+		      \end{align*}
+\end{itemize}
+
+\vspace*{0.5cm}
+\subsubsection*{\large Hermite series expansion of a function $f(\bm{x})$}
+
+\begin{equation}
+	f(\bm{x}) = \omega(\bm{x}) \sum_{n=0}^{\infty} \frac{1}{n!} \bm{a}^{(n)}:\bm{H}^{(n)}(\bm{x}) \label{d-dimensional hermite f(x)}
+\end{equation}
+
+with corresponding coefficients:
+
+\begin{equation}
+	\bm{a}^{(n)} = \int_{-\infty}^{\infty} f(\bm{x}) \, \bm{H}^{(n)} \, \text{d}^d x
+\end{equation}
+
+Proof:
+
+rewrite (\ref{d-dimensional hermite f(x)}) as
+
+$$
+f(\bm{x}) = \sum_{n=0}^{\infty} \frac{1}{n!} \left ( \, \sum_{\text{all components}} a^{(n)}_{\bm{\alpha}} \omega(\bm{x}) H^{(n)}_{\bm{\alpha}} \right )
+$$
+
+multiplying by $H^{(m)}_{\bm{\beta}}$ on both sides, then integrate 
+
+$$
+\int_{-\infty}^{\infty} f(\bm{x}) H^{(m)}_{\bm{\beta}} \, \text{d}^d x =  \sum_{n=0}^{\infty} \frac{1}{n!} \left ( \, \sum_{\text{all components}} a^{(n)}_{\bm{\alpha}} \int_{-\infty}^{\infty} \omega(\bm{x}) H^{(n)}_{\bm{\alpha}} H^{(m)}_{\bm{\beta}} \, \text{d}^d x \right )
+$$
+
+using identity from (\ref{second_form}) on the integral of the right side
+
+$$
+\int_{-\infty}^{\infty} f(\bm{x}) H^{(m)}_{\bm{\beta}} \, \text{d}^d x = \sum_{n=0}^{\infty} \frac{1}{n!} \left ( \, \sum_{\text{all components}} a^{(n)}_{\bm{\alpha}} \prod_{i=1}^{d} n_i! \delta_{nm} \delta_{\bm{\alpha} \bm{\beta}} \right )
+$$
+
+The Kronecker deltas, $\delta_{nm} \delta_{\bm{\alpha} \bm{\beta}}$ are 1 only if $\bm{\alpha} = \bm{\beta}$ and $n=m$
+
+$$
+\int_{-\infty}^{\infty} f(\bm{x}) H^{(n)}_{\bm{\alpha}} \, \text{d}^d x = \frac{1}{n!} \left ( \, \sum_{\text{all components}} a^{(n)}_{\bm{\alpha}} \prod_{i=1}^{d} n_i! \right )
+$$
+
+There are $\frac{n!}{n_1!n_2! \dots n_d!}$ way to permute $\bm{\alpha} = \alpha_1 \dots \alpha_n$. For example, $\bm{\alpha} = xyz$ has 6 unique permutations are $\{ xyz, xzy, zxy, zyx, yxz, yzx\}$. The sum of all components reduces to
+
+\begin{align*}
+	\int_{-\infty}^{\infty} f(\bm{x}) H^{(n)}_{\bm{\alpha}} \, \text{d}^d x &= \frac{1}{n!} \left ( \frac{n!}{n_1!n_2! \dots n_d!} a^{(n)}_{\bm{\alpha}} \prod_{i=1}^{d} n_i! \right ) \\
+	&= \frac{1}{n!} \left ( \frac{n!}{n_1!n_2! \dots n_d!} a^{(n)}_{\bm{\alpha}} n_1!n_2! \dots n_d! \right ) \\
+	a^{(n)}_{\bm{\alpha}} &= \int_{-\infty}^{\infty} f(\bm{x}) H^{(n)}_{\bm{\alpha}} \, \text{d}^d x
+\end{align*}
+
+Thus, in general
+
+$$
+\bm{a}^{(n)} = \int_{-\infty}^{\infty} f(\bm{x}) \, \bm{H}^{(n)} \, \text{d}^d x \qquad \square
+$$
+
+\vspace*{1cm}
+\subsubsection*{References}
+\begin{enumerate}
+	\item \label{} ...
+\end{enumerate}
+\clearpage
+% --- End of page --- %
+
+\section*{Proof from textbook:}
+From Kruger2017 e.q. (3.42)
+
+\[
+\bm{a}^{(n),eq} = \rho \int \omega(\bm{\eta})\bm{H}^{(n)} (\bm{\xi}) \,\text{d}^d \eta
+\]
+
+where $\bm{\xi} = \sqrt{\theta}\bm{\eta} + \bm{u}$
+
+The components are given
+\begin{align*}
+	a^{(n),eq}_{\bm{\alpha}} &= \rho \int_{-\infty}^{+\infty} \omega(\bm{\eta}) H^{(n),eq}_{\bm{\alpha}} (\bm{\xi}) \,\text{d}^d \eta_i \\
+	                                     &= \rho \int_{-\infty}^{+\infty} \left ( \prod_{i=1}^{d} \omega(\eta_i)\right ) \left ( \prod_{i=1}^{d} H^{(n_i)}({\xi_i}) \right ) \left ( \prod_{i=1}^{d} \text{d} \eta_i \right ) \\
+	                                     &= \rho \prod_{i=1}^{d} \int_{-\infty}^{+\infty} \omega(\eta_i) H^{(n_i)}({\xi_i}) \,\text{d} \eta_i
+\end{align*}
+
+\subsection*{Examples:}
+
+for $n = 0$
+\begin{align*}
+	a^{(0),eq} &= \rho \prod_{i=1}^{d} \int_{-\infty}^{+\infty} \omega(\eta_i) H^{(0)}(\xi_i) \,\text{d} \eta_i \\
+	           &= \rho \prod_{i=1}^{d} \int_{-\infty}^{+\infty} \omega(\eta_i) (1) \,\text{d} \eta_i \\
+	           &= \rho \prod_{i=1}^{d} (1) \\
+	           &= \rho
+\end{align*}
+
+for $n = 1$
+\begin{align*}
+	a^{(1),eq}_{\alpha_1} &= \rho \left ( \int_{-\infty}^{+\infty} \omega(\eta_1) H^{(1)} ({\xi_1}) \,\text{d} \eta_1 \right ) \overbrace{\left ( \int_{-\infty}^{+\infty} \omega(\eta_2) H^{(0)} (\xi_2) \,\text{d} \eta_2 \right ) \left ( \dots \vphantom{\int} \right )}^{= \, 1} \\
+	                      &= \rho \int_{-\infty}^{+\infty} \omega(\eta_1) \, \xi_1 \,\text{d} \eta_1 \\
+	                      &= \rho \int_{-\infty}^{+\infty} \omega(\eta_1) \, (\sqrt{\theta} \eta_1 + u_1) \,\text{d} \eta_1 \\
+	                      &= \rho \, ( \, 0 + u_1) \\
+	                      &= \rho u_{\alpha_1}
+\end{align*}
+\clearpage
+
+for $n = 2$
+
+case 1: $\alpha_1 \ne \alpha_2$
+\small
+\begin{align*}
+	a^{(2),eq}_{\alpha_1\alpha_2} &= \rho \left ( \int_{-\infty}^{+\infty} \omega(\eta_1) H^{(1)} (\xi_1) \,\text{d} \eta_1 \right ) \left ( \int_{-\infty}^{+\infty} \omega(\eta_2) H^{(1)} (\xi_2) \,\text{d} \eta_2 \right ) \overbrace{\left ( \int_{-\infty}^{+\infty} \omega(\eta_3) H^{(0)} ({\xi_3}) \,\text{d} \eta_3 \right ) \left ( \dots \vphantom{\int} \right )}^{= \, 1} \\
+	                              &= \rho u_1 u_2 \\
+\end{align*}
+\normalsize
+
+case 2 $\alpha_1 = \alpha_2$
+\small
+\begin{align*}
+	a^{(2),eq}_{\alpha_1\alpha_1} &= \rho \left ( \int_{-\infty}^{+\infty} \omega(\eta_1) H^{(2)}({\xi_1}) \,\text{d} \eta_1 \right ) \overbrace{\left ( \int_{-\infty}^{+\infty} \omega(\eta_2) H^{(0)} ({\xi_2}) \,\text{d} \eta_2 \right ) \left ( \dots \vphantom{\int} \right )}^{= \, 1} \\
+	                              &= \rho \int_{-\infty}^{\infty} \omega(\eta_1) \, (\xi_1^2 - 1) \,\text{d} \eta_1 \\
+	                              &= \rho \int_{-\infty}^{\infty} \omega(\eta_1) \, (\theta \eta_1^2 + u_1^2 + 2\sqrt{\theta}\eta_{\alpha_1}u_{\alpha_1} - 1) \,\text{d} \eta_{\alpha_1} \\
+	                              &= \rho \left ( \frac{\theta}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} \eta_1^2 e^{-\eta_{1}^2 / 2} \,\text{d} \eta_1 + u_1^2 \int_{-\infty}^{+\infty} \omega(\eta_1) \,\text{d} \eta_1 + 2\sqrt{\theta}u_1 \int_{-\infty}^{+\infty} \omega(\eta_1) \eta_1 \,\text{d} \eta_{\alpha_1} - \int_{-\infty}^{+\infty} \omega(\eta_1) \,\text{d} \eta_1 \right ) \\
+	                              &= \rho \, (\theta + u_1^2 + 0 - 1) \\
+	                              &= \rho \, (u_1^2 + (\theta - 1))
+\end{align*}
+\normalsize
+
+thus
+\[
+a^{(2),eq}_{\alpha_1 \alpha_2} = \rho \, (u_{\alpha_1} u_{\alpha_2} + (\theta - 1) \delta_{\alpha_1, \alpha_2})
+\]
+
+\clearpage
+% --- End of page --- %
+
+\section*{Re-definitions}
+\renewcommand{\theequation}{\arabic{equation}}
+\setcounter{equation}{0}
+\begin{align}
+	\intertext{1-d generating function:}
+	\omega(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2 / 2} &\longrightarrow \omega(x, \sigma) = \frac{1}{\sigma \sqrt{2\pi}} e^{-x^2 / 2 \sigma^2} \label{new_1d_generating_function} \\
+	\intertext{d-dimensional generating function:}
+	\omega(\bm{x}) = \frac{1}{(2\pi)^{d/2}} e^{-\bm{x^2} / 2} &\longrightarrow \omega(\bm{x}, \sigma) = \frac{1}{(2\pi \sigma^2)^{d/2}} e^{-\bm{x^2} / 2 \sigma^2} \label{new_d_generating_function} \\
+	\intertext{1-d Hermite polynomials}
+	H^{(n)}(x) = (-1)^{n} \frac{1}{\omega(x)} \frac{\text{d}^n}{\text{d}x^n} \omega(x) &\longrightarrow H^{(n)}(x, \sigma) = \sigma^{2n} (-1)^{n} \frac{1}{\omega(x, \sigma)} \frac{\text{d}^n}{\text{d}x^n} \omega(x, \sigma) \label{new_1d_hermite_polynomial} \\
+	\intertext{d-dimensional Hermite polynomials}
+	H^{(n)}(\bm{x}) = (-1)^{n} \frac{1}{\omega(\bm{x})} \bm{\nabla}^{(n)} \omega(\bm{x}) &\longrightarrow H^{(n)}(\bm{x}, \sigma) = \sigma^{2n} (-1)^{n} \frac{1}{\omega(\bm{x}, \sigma)} \bm{\nabla}^{(n)} \omega(\bm{x}, \sigma) \label{new_d_hermite_polynomial}
+\end{align}
+
+Some polynomials from Eq. \eqref{new_1d_hermite_polynomial} are:
+
+$$
+H^{(0)} = 1, \qquad H^{(2)} = x^2 - \sigma^2
+$$
+
+$$
+H^{(1)} = x, \qquad H^{(3)} = x^3 - 3x\sigma^2
+$$
+
+The orthogonal identities are still the same:
+
+$$
+\int_{-\infty}^{+\infty} \omega(x) H^{(n)} (x) H^{(m)} (x) \, \text{d}x = n! \delta_{nm}
+$$
+
+$$
+\int_{-\infty}^{+\infty} \omega(\bm{x}) H^{(n)}_{\bm{\alpha}}(\bm{x}) H^{(m)}_{\bm{\beta}}(\bm{x}) \, \text{d}^d x = \prod_{i=1}^{d} n_i! \delta_{nm} \delta_{\bm{\alpha} \bm{\beta}}
+$$
+
+Hermite series expansion are still the same:
+
+$$
+f(x) = \omega(x) \sum_{n=0}^{\infty} \frac{1}{n!} a^{(n)} H^{(n)} (x), \qquad a^{(n)} = \int_{-\infty}^{+\infty} f(x) H^{(n)}(x) \, \text{d}x
+$$
+
+$$
+f(\bm{x}) = \omega(\bm{x}) \sum_{n=0}^{\infty} \frac{1}{n!} \bm{a}^{(n)}:\bm{H}^{(n)}(\bm{x}), \qquad 	\bm{a}^{(n)} = \int_{-\infty}^{\infty} f(\bm{x}) \, \bm{H}^{(n)} \, \text{d}^d x
+$$
+
+Now consider the non-dimensional equilibrium distribution function:
+
+\begin{equation}
+	f^{eq} (\rho, \theta, \bm{u}, \bm{\xi}) = \frac{\rho}{(2\pi\theta)^{d/2}} e^{-(\bm{\xi} - \bm{u}^2) / 2\theta } \label{f_eq}
+\end{equation}
+
+However, this form is incompatible with Eq. \eqref{new_d_generating_function} because the $\theta$ does not match the parameterization of $\sigma^2$. We can write \eqref{f_eq} as a function of \eqref{new_d_generating_function} by re-normalize velocities $\bm{\xi} \rightarrow \bm{\xi} / c_s$ and $\bm{u} \rightarrow \bm{u} / c_s$
+
+\begin{align}
+	f^{eq} \left ( \rho, \theta, \frac{\bm{u}}{c_s}, \frac{\bm{\xi}}{c_s} \right ) = \frac{c_s^d}{c_s^d} \cdot \frac{\rho}{(2\pi \theta)^{d/2}} e^{-(\frac{\bm{\xi} - \bm{u}}{c_s})^2 / 2 \theta} &= \frac{\rho c_s^d}{\theta^{d/2}} \left [ \frac{1}{(2\pi c_s^2)^{d/2}} e^{-(\frac{\bm{\xi} - \bm{u}}{\sqrt{\theta}})^2 / 2 c_s^2} \right ] \notag \\
+	f^{eq} \left ( \rho, \theta, \frac{\bm{u}}{c_s}, \frac{\bm{\xi}}{c_s}, c_s \right ) &= \frac{\rho c_s^d}{\theta^{d/2}} \omega \left ( \frac{\bm{\xi} - \bm{u}}{\sqrt{\theta}}, c_s \right ) \label{f_eq_2nd_form}
+\end{align}
+
+\clearpage
+% --- End of page --- %
+
+From Eq. \eqref{f_eq_2nd_form}, we found that $\bm{x} = \bm{\xi} / c_s$ and $\sigma = c_s$. Hermite series expansion of $f^{(eq)}$ is written as
+$$
+f^{eq} \left ( \rho, \theta, \frac{\bm{u}}{c_s}, \frac{\bm{\xi}}{c_s}, c_s \right ) = \omega \left ( \frac{\bm{\xi}}{c_s} \right ) \sum_{n=0}^{\infty} \frac{1}{n!} \bm{a}^{(n), eq} (\rho, \theta, \bm{u}, c_s):\bm{H}^{(n)} \left ( \frac{\bm{\xi}}{c_s}, c_s \right )
+$$
+
+The coefficients
+
+\begin{align*}
+	\bm{a}^{(n), eq}(\rho, \theta, \bm{u}, c_s) &= \int_{-\infty}^{\infty} f^{eq} \left ( \rho, \theta, \frac{\bm{u}}{c_s}, \frac{\bm{\xi}}{c_s}, c_s \right ) \bm{H}^{(n)} \left ( \frac{\bm{\xi}}{c_s}, c_s \right ) \, \text{d}^d \left( \frac{\xi_i}{c_s} \right ) \\
+	&= \frac{\rho \cancel{c_s^d}}{\theta^{d/2}} \int_{-\infty}^{\infty} \omega \left ( \frac{\bm{\xi} - \bm{u}}{\sqrt{\theta}}, c_s \right ) \bm{H}^{(n)} \left ( \frac{\bm{\xi}}{c_s}, c_s \right ) \, \frac{\text{d}^d \xi_i}{\cancel{c_s^d}}
+\end{align*}
+consider a component $\bm{\alpha} = \alpha_1 \dots \alpha_n$
+
+\begin{align}
+	a_{\bm{\alpha}}^{(n), eq}(\rho, \theta, \bm{u}, c_s) &= \frac{\rho}{\theta^{d/2}} \int_{-\infty}^{\infty} \omega \left ( \frac{\bm{\xi} - \bm{u}}{\sqrt{\theta}}, c_s \right ) H^{(n)}_{\bm{\alpha}} \left ( \frac{\bm{\xi}}{c_s}, c_s \right ) \, \text{d}^d \xi_i
+	\intertext{define $\bm{\eta} = \frac{\bm{\xi} - \bm{u}}{\sqrt{\theta}} \implies \bm{\xi} = \sqrt{\theta} \bm{\eta} + \bm{u}$}
+	&= \frac{\rho}{\cancel{\theta^{d/2}}} \int_{-\infty}^{\infty} \omega(\bm{\eta}, c_s) \, H^{(n)}_{\bm{\alpha}} \left ( \frac{\bm{\xi}}{c_s}, c_s \right ) \cancel{\theta^{d/2}} \text{d}^d \eta_i \notag \\
+	a_{\bm{\alpha}}^{(n), eq} &= \rho \prod_{i=1}^{d} \int_{-\infty}^{\infty} \omega(\eta_i, c_s) H^{(n_i)} \left ( \frac{\xi_i}{c_s}, c_s \right ) \, \text{d} \eta_i \label{new_coefficient_definition}
+\end{align}
+
+The first three order $(n=0,1,2)$ of Eq. \eqref{new_coefficient_definition} are given:
+
+\begin{align*}
+	a^{(0)} &= \rho \\
+	a^{(1)}_{\alpha_1} &= \rho \frac{u_{\alpha_1}}{c_s} \\
+	a^{(2)}_{\alpha_1 \alpha_2} &= \rho \left ( \frac{u_{\alpha_1} u_{\alpha_2}}{c_s^2} + (\theta - c_s^2)\delta_{\alpha_1 \alpha_2} \right ) 
+\end{align*}
+
+\vspace*{1cm}
+Proof of $a^{(2)}_{\alpha_1 \alpha_2}$ :
+
+Case $\alpha_1 = \alpha_2$
+
+\begin{align*}
+	a^{(2)}_{\alpha_1 \alpha_1} &= \rho \int_{-\infty}^{\infty} \omega(\eta_1, c_s) H^{(2)} \left ( \frac{\xi_1}{c_s}, c_s \right ) \, \text{d} \eta_1 \\
+	&= \rho \int_{-\infty}^{\infty} \omega(\eta_1, c_s) \left ( \frac{\xi_1^2}{c_s^2} - c_s^2 \right ) \, \text{d} \eta_1
+	\intertext{since $\xi_1 = \sqrt{\eta_1} + u_1$}
+	&= \rho \int_{-\infty}^{\infty} \omega(\eta_1, c_s) \left ( \theta \frac{\eta_1^2}{c_s^2} + \frac{u_1^2}{c_s^2} + 2\sqrt{\theta}\frac{u_1 \eta_1}{c_s^2} - c_s^2 \right ) \, \text{d} \eta_1 \\
+\end{align*}
+
+$\eta_1$ is an odd function, the integral of 
+$$
+\int_{-\infty}^{\infty} \omega(\eta_1, c_s) \eta_1 \, \text{d} \eta_1 = 0
+$$
+
+and the terms that not include $\eta_1$, the integral of
+$$
+\int_{-\infty}^{\infty} \omega(\eta_1, c_s) \, \text{d} \eta_1 = 1
+$$
+
+$$
+a^{(2)}_{\alpha_1 \alpha_1} = \rho \left ( \frac{\theta}{c_s^2} \int_{-\infty}^{\infty} \omega(\eta_1, c_s) \eta_1^2 \, \text{d} \eta_1 + \frac{u_1^2}{c_s^2} - c_s^2 \right )
+$$
+
+Consider the integral
+
+\begin{align*}
+	I = \int_{-\infty}^{\infty} \omega(\eta_1, c_s) \eta_1^2 \, \text{d} \eta_1 = \frac{1}{c_s \sqrt{2\pi}} \int_{-\infty}^{\infty} e^{-\eta_1^2 / 2 c_s^2} \, \eta_1^2 \, \text{d} \eta_1
+\end{align*}
+
+Let's $u = \frac{\eta_1}{\sqrt{2} c_s} \implies \text{d} u = \frac{\text{d} \eta_1}{\sqrt{2} c_s}$
+
+\begin{align*}
+	I &= \frac{1}{\cancel{c_s} \sqrt{\cancel{2}\pi}} \int_{-\infty}^{\infty} e^{-u^2} (2 c_s^2 u^2) \, (\cancel{\sqrt{2} c_s} \text{d} u) \\
+	&= \frac{2c_s^2}{\sqrt{\pi}} \int_{-\infty}^{\infty} e^{-u^2} u^2 \, \text{d} u \\
+	&= \frac{\cancel{2} c_s^2}{\cancel{\sqrt{\pi}}} \cdot \frac{\cancel{\sqrt{\pi}}}{\cancel{2}} \\
+	&= c_s^2
+\end{align*}
+
+Finally, we got
+
+$$
+a^{(2)}_{\alpha_1 \alpha_1} = \rho \left ( \frac{u_1^2}{c_s^2} + (\theta - c_s^2) \right ) \qquad \square
+$$
+
+\clearpage
+% --- End of page --- %
+
+\end{document}
