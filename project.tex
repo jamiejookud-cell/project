@@ -7,6 +7,8 @@
 \usepackage{amsmath, amssymb, bm}
 \usepackage[makeroom]{cancel}
 
+\usepackage{xcolor}
+
 \begin{document}
 
 \section*{blank page template}
@@ -154,7 +156,7 @@ Substitute $f_i(\bm{x}, t)$ into (\ref{A.1.14}), we get the lattice-Boltzmann eq
 
 \subsection*{\huge A.2 Hermite polynomials}
 \vspace*{0.5cm}
-\subsubsection*{\large One dimensional Hermite polynomials}
+\subsubsection*{\large A.2.1 One dimensional Hermite polynomials}
 \renewcommand{\theequation}{A.2.\arabic{equation}}
 \setcounter{equation}{0}
 
@@ -179,7 +181,7 @@ where $n = 0, 1, 2, \dots$
 	H^{(4)} (x) &= x^4 - 6x^2 + 3, & H^{(5)} (x) &= x^5 - 10x^3 + 15x \\
 \end{align*}
 
-\subsubsection*{Orthogonality of Hermite polynomials}
+\subsubsection*{\large A.2.2 Orthogonality of Hermite polynomials}
 \begin{equation}
 	\int_{-\infty}^{+\infty} \omega(x) H^{(n)} (x) H^{(m)} (x) \, \text{d}x = n! \delta_{nm} \label{1d_hermite_othogonal}
 \end{equation}
@@ -220,7 +222,7 @@ $$
 $$
 
 \vspace*{0.5cm}
-\subsubsection*{\large Hermite series expansion of a function}
+\subsubsection*{\large A.2.3 Hermite series expansion of a function}
 
 A function, $f(x)$, can be expanded as an infinite sum of Hermite polynomials as:
 
@@ -246,7 +248,7 @@ multiplying by $H^{(m)}$ on both sides of e.q. (\ref{f(x)-hermite-1d}), then int
 \clearpage
 % --- End of page --- %
 
-\subsubsection*{\large Hermite polynomials in \textit{d}-dimensions}
+\subsubsection*{\large A.2.4 Hermite polynomials in \textit{d}-dimensions}
 Generalize coordinates:
 $$
 \bm{x} = \begin{bmatrix}
@@ -349,7 +351,7 @@ H^{(3)}_{xxy} = H^{(2)}_{xx} H^{(1)}_{y} = (x^2-1)(y) = x^2y-y
 $$
 
 \vspace*{0.5cm}
-\subsubsection*{\large Orthogonality of \textit{d}-dimensional Hermite polynomials}
+\subsubsection*{\large A.2.5 Orthogonality of \textit{d}-dimensional Hermite polynomials}
 \begin{equation}
 	I = \int_{-\infty}^{+\infty} \omega(\bm{x}) H^{(n)}_{\bm{\alpha}}(\bm{x}) H^{(m)}_{\bm{\beta}}(\bm{x}) \, \text{d}^d x = \prod_{i=1}^{d} n_i! \delta_{nm} \delta_{\bm{\alpha} \bm{\beta}} \label{product_hermite}
 \end{equation}
@@ -412,7 +414,7 @@ The (\ref{first_form}) can we written in a more proper way as
 \end{itemize}
 
 \vspace*{0.5cm}
-\subsubsection*{\large Hermite series expansion of a function $f(\bm{x})$}
+\subsubsection*{\large A.2.6 Hermite series expansion of a function $f(\bm{x})$}
 
 \begin{equation}
 	f(\bm{x}) = \omega(\bm{x}) \sum_{n=0}^{\infty} \frac{1}{n!} \bm{a}^{(n)}:\bm{H}^{(n)}(\bm{x}) \label{d-dimensional hermite f(x)}
@@ -523,8 +525,8 @@ case 2 $\alpha_1 = \alpha_2$
 \begin{align*}
 	a^{(2),eq}_{\alpha_1\alpha_1} &= \rho \left ( \int_{-\infty}^{+\infty} \omega(\eta_1) H^{(2)}({\xi_1}) \,\text{d} \eta_1 \right ) \overbrace{\left ( \int_{-\infty}^{+\infty} \omega(\eta_2) H^{(0)} ({\xi_2}) \,\text{d} \eta_2 \right ) \left ( \dots \vphantom{\int} \right )}^{= \, 1} \\
 	                              &= \rho \int_{-\infty}^{\infty} \omega(\eta_1) \, (\xi_1^2 - 1) \,\text{d} \eta_1 \\
-	                              &= \rho \int_{-\infty}^{\infty} \omega(\eta_1) \, (\theta \eta_1^2 + u_1^2 + 2\sqrt{\theta}\eta_{\alpha_1}u_{\alpha_1} - 1) \,\text{d} \eta_{\alpha_1} \\
-	                              &= \rho \left ( \frac{\theta}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} \eta_1^2 e^{-\eta_{1}^2 / 2} \,\text{d} \eta_1 + u_1^2 \int_{-\infty}^{+\infty} \omega(\eta_1) \,\text{d} \eta_1 + 2\sqrt{\theta}u_1 \int_{-\infty}^{+\infty} \omega(\eta_1) \eta_1 \,\text{d} \eta_{\alpha_1} - \int_{-\infty}^{+\infty} \omega(\eta_1) \,\text{d} \eta_1 \right ) \\
+	                              &= \rho \int_{-\infty}^{\infty} \omega(\eta_1) \, (\theta \eta_1^2 + u_1^2 + 2\sqrt{\theta}\eta_1 u_1 - 1) \,\text{d} \eta_1 \\
+	                              &= \rho \left ( \frac{\theta}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} \eta_1^2 e^{-\eta_{1}^2 / 2} \,\text{d} \eta_1 + u_1^2 \int_{-\infty}^{+\infty} \omega(\eta_1) \,\text{d} \eta_1 + 2\sqrt{\theta}u_1 \int_{-\infty}^{+\infty} \omega(\eta_1) \eta_1 \,\text{d} \eta_1 - \int_{-\infty}^{+\infty} \omega(\eta_1) \,\text{d} \eta_1 \right ) \\
 	                              &= \rho \, (\theta + u_1^2 + 0 - 1) \\
 	                              &= \rho \, (u_1^2 + (\theta - 1))
 \end{align*}
@@ -552,7 +554,7 @@ a^{(2),eq}_{\alpha_1 \alpha_2} = \rho \, (u_{\alpha_1} u_{\alpha_2} + (\theta - 
 	H^{(n)}(\bm{x}) = (-1)^{n} \frac{1}{\omega(\bm{x})} \bm{\nabla}^{(n)} \omega(\bm{x}) &\longrightarrow H^{(n)}(\bm{x}, \sigma) = \sigma^{2n} (-1)^{n} \frac{1}{\omega(\bm{x}, \sigma)} \bm{\nabla}^{(n)} \omega(\bm{x}, \sigma) \label{new_d_hermite_polynomial}
 \end{align}
 
-Some polynomials from Eq. \eqref{new_1d_hermite_polynomial} are:
+Some polynomials from e.q. \eqref{new_1d_hermite_polynomial} are:
 
 $$
 H^{(0)} = 1, \qquad H^{(2)} = x^2 - \sigma^2
@@ -588,19 +590,22 @@ Now consider the non-dimensional equilibrium distribution function:
 	f^{eq} (\rho, \theta, \bm{u}, \bm{\xi}) = \frac{\rho}{(2\pi\theta)^{d/2}} e^{-(\bm{\xi} - \bm{u}^2) / 2\theta } \label{f_eq}
 \end{equation}
 
-However, this form is incompatible with Eq. \eqref{new_d_generating_function} because the $\theta$ does not match the parameterization of $\sigma^2$. We can write \eqref{f_eq} as a function of \eqref{new_d_generating_function} by re-normalize velocities $\bm{\xi} \rightarrow \bm{\xi} / c_s$ and $\bm{u} \rightarrow \bm{u} / c_s$
+However, this form is incompatible with e.q. \eqref{new_d_generating_function} because the $\theta$ does not match the parameterization of $\sigma^2$. We can write \eqref{f_eq} as a function of \eqref{new_d_generating_function} by re-normalize velocities $\bm{\xi} \rightarrow \bm{\xi} / c_s$ and $\bm{u} \rightarrow \bm{u} / c_s$
 
-\begin{align}
-	f^{eq} \left ( \rho, \theta, \frac{\bm{u}}{c_s}, \frac{\bm{\xi}}{c_s} \right ) = \frac{c_s^d}{c_s^d} \cdot \frac{\rho}{(2\pi \theta)^{d/2}} e^{-(\frac{\bm{\xi} - \bm{u}}{c_s})^2 / 2 \theta} &= \frac{\rho c_s^d}{\theta^{d/2}} \left [ \frac{1}{(2\pi c_s^2)^{d/2}} e^{-(\frac{\bm{\xi} - \bm{u}}{\sqrt{\theta}})^2 / 2 c_s^2} \right ] \notag \\
-	f^{eq} \left ( \rho, \theta, \frac{\bm{u}}{c_s}, \frac{\bm{\xi}}{c_s}, c_s \right ) &= \frac{\rho c_s^d}{\theta^{d/2}} \omega \left ( \frac{\bm{\xi} - \bm{u}}{\sqrt{\theta}}, c_s \right ) \label{f_eq_2nd_form}
-\end{align}
+$$
+f^{eq} \left ( \rho, \theta, \frac{\bm{u}}{c_s}, \frac{\bm{\xi}}{c_s} \right ) = \frac{c_s^d}{c_s^d} \cdot \frac{\rho}{(2\pi \theta)^{d/2}} e^{-(\frac{\bm{\xi} - \bm{u}}{c_s})^2 / 2 \theta} = \frac{\rho c_s^d}{\theta^{d/2}} \left [ \frac{1}{(2\pi c_s^2)^{d/2}} e^{-(\frac{\bm{\xi} - \bm{u}}{\sqrt{\theta}})^2 / 2 c_s^2} \right ]
+$$
+
+\begin{equation}
+	\implies f^{eq} \left ( \rho, \theta, \frac{\bm{u}}{c_s}, \frac{\bm{\xi}}{c_s}, c_s \right ) = \frac{\rho c_s^d}{\theta^{d/2}} \omega \left ( \frac{\bm{\xi} - \bm{u}}{\sqrt{\theta}}, c_s \right ) \label{f_eq_2nd_form}
+\end{equation}
 
 \clearpage
 % --- End of page --- %
 
-From Eq. \eqref{f_eq_2nd_form}, we found that $\bm{x} = \bm{\xi} / c_s$ and $\sigma = c_s$. Hermite series expansion of $f^{(eq)}$ is written as
+From e.q. \eqref{f_eq_2nd_form}, we found that $\bm{x} = \bm{\xi} / c_s$ and $\sigma = c_s$. Hermite series expansion of $f^{(eq)}$ is written as
 $$
-f^{eq} \left ( \rho, \theta, \frac{\bm{u}}{c_s}, \frac{\bm{\xi}}{c_s}, c_s \right ) = \omega \left ( \frac{\bm{\xi}}{c_s} \right ) \sum_{n=0}^{\infty} \frac{1}{n!} \bm{a}^{(n), eq} (\rho, \theta, \bm{u}, c_s):\bm{H}^{(n)} \left ( \frac{\bm{\xi}}{c_s}, c_s \right )
+f^{eq} \left ( \rho, \theta, \frac{\bm{u}}{c_s}, \frac{\bm{\xi}}{c_s}, c_s \right ) = \omega \left ( \frac{\bm{\xi}}{c_s}, c_s \right ) \sum_{n=0}^{\infty} \frac{1}{n!} \bm{a}^{(n), eq} (\rho, \theta, \bm{u}, c_s):\bm{H}^{(n)} \left ( \frac{\bm{\xi}}{c_s}, c_s \right )
 $$
 
 The coefficients
@@ -618,21 +623,21 @@ consider a component $\bm{\alpha} = \alpha_1 \dots \alpha_n$
 	a_{\bm{\alpha}}^{(n), eq} &= \rho \prod_{i=1}^{d} \int_{-\infty}^{\infty} \omega(\eta_i, c_s) H^{(n_i)} \left ( \frac{\xi_i}{c_s}, c_s \right ) \, \text{d} \eta_i \label{new_coefficient_definition}
 \end{align}
 
-The first three order $(n=0,1,2)$ of Eq. \eqref{new_coefficient_definition} are given:
+The first three order $(n=0,1,2)$ of e.q. \eqref{new_coefficient_definition} are given:
 
 \begin{align*}
-	a^{(0)} &= \rho \\
-	a^{(1)}_{\alpha_1} &= \rho \frac{u_{\alpha_1}}{c_s} \\
-	a^{(2)}_{\alpha_1 \alpha_2} &= \rho \left ( \frac{u_{\alpha_1} u_{\alpha_2}}{c_s^2} + (\theta - c_s^2)\delta_{\alpha_1 \alpha_2} \right ) 
+	a^{(0),eq} &= \rho \\
+	a^{(1), eq}_{\alpha_1} &= \rho \frac{u_{\alpha_1}}{c_s} \\
+	a^{(2), eq}_{\alpha_1 \alpha_2} &= \rho \left ( \frac{u_{\alpha_1} u_{\alpha_2}}{c_s^2} + (\theta - c_s^2)\delta_{\alpha_1 \alpha_2} \right ) 
 \end{align*}
 
 \vspace*{1cm}
-Proof of $a^{(2)}_{\alpha_1 \alpha_2}$ :
+Proof of $a^{(2), eq}_{\alpha_1 \alpha_2}$ :
 
 Case $\alpha_1 = \alpha_2$
 
 \begin{align*}
-	a^{(2)}_{\alpha_1 \alpha_1} &= \rho \int_{-\infty}^{\infty} \omega(\eta_1, c_s) H^{(2)} \left ( \frac{\xi_1}{c_s}, c_s \right ) \, \text{d} \eta_1 \\
+	a^{(2),eq}_{\alpha_1 \alpha_1} &= \rho \int_{-\infty}^{\infty} \omega(\eta_1, c_s) H^{(2)} \left ( \frac{\xi_1}{c_s}, c_s \right ) \, \text{d} \eta_1 \\
 	&= \rho \int_{-\infty}^{\infty} \omega(\eta_1, c_s) \left ( \frac{\xi_1^2}{c_s^2} - c_s^2 \right ) \, \text{d} \eta_1
 	\intertext{since $\xi_1 = \sqrt{\eta_1} + u_1$}
 	&= \rho \int_{-\infty}^{\infty} \omega(\eta_1, c_s) \left ( \theta \frac{\eta_1^2}{c_s^2} + \frac{u_1^2}{c_s^2} + 2\sqrt{\theta}\frac{u_1 \eta_1}{c_s^2} - c_s^2 \right ) \, \text{d} \eta_1 \\
@@ -649,7 +654,7 @@ $$
 $$
 
 $$
-a^{(2)}_{\alpha_1 \alpha_1} = \rho \left ( \frac{\theta}{c_s^2} \int_{-\infty}^{\infty} \omega(\eta_1, c_s) \eta_1^2 \, \text{d} \eta_1 + \frac{u_1^2}{c_s^2} - c_s^2 \right )
+a^{(2), eq}_{\alpha_1 \alpha_1} = \rho \left ( \frac{\theta}{c_s^2} \int_{-\infty}^{\infty} \omega(\eta_1, c_s) \eta_1^2 \, \text{d} \eta_1 + \frac{u_1^2}{c_s^2} - c_s^2 \right )
 $$
 
 Consider the integral
@@ -670,8 +675,32 @@ Let's $u = \frac{\eta_1}{\sqrt{2} c_s} \implies \text{d} u = \frac{\text{d} \eta
 Finally, we got
 
 $$
-a^{(2)}_{\alpha_1 \alpha_1} = \rho \left ( \frac{u_1^2}{c_s^2} + (\theta - c_s^2) \right ) \qquad \square
+a^{(2), eq}_{\alpha_1 \alpha_1} = \rho \left ( \frac{u_{\alpha_1}^2}{c_s^2} + (\theta - c_s^2) \right ) \qquad \square
 $$
+
+\vspace*{1cm}
+The first 3-order of non-dimensional equilibrium distribution function becomes
+\vspace*{0.5cm}
+
+\begin{equation}
+	f^{(eq)}_i \left ( \rho, \theta, \frac{\bm{u}}{c_s}, \frac{\bm{\xi}}{c_s}, c_s \right ) \approx \omega \left ( \frac{\bm{\xi}}{c_s}, c_s \right ) \rho \left [ 1 + \frac{u_\alpha \xi_{i \alpha}}{c_s^2} + \frac{1}{2} \left ( \frac{u_\alpha u_\beta}{c_s^2} + (\theta - c_s^2)\delta_{\alpha \beta} \right ) \left ( \frac{\xi_{i \alpha} \xi_{i \beta}}{c_s^2} - c_s^2 \delta_{\alpha \beta}\right ) \right ] \label{new_f_eq}
+\end{equation}
+
+\vspace*{0.5cm}
+if $c_s = 1$, e.q. \eqref{new_f_eq} reduces to e.q. (3.46) [Kruger's textbook]
+
+$$
+f^{(eq)}_i ( \rho, \theta, \bm{u}, \bm{\xi} ) \approx \omega(\bm{\xi}) \rho \left [ 1 + u_\alpha \xi_{i \alpha} + \frac{1}{2} \left ( u_\alpha u_\beta + (\theta - 1) \delta_{\alpha \beta} \right ) \left ( \xi_{i \alpha} \xi_{i \beta} - \delta_{\alpha \beta}\right ) \right ]
+$$
+
+\textcolor{red}{PROBLEM!} Assuming $\theta = c_s^2$ (isothermal process), e.q \eqref{new_f_eq} gives different result from e.q. (3.54)
+
+
+
+$$
+	f^{(eq)}_i \left ( \rho, \theta, \frac{\bm{u}}{c_s}, \frac{\bm{\xi}}{c_s}, c_s \right ) = w_i \rho \left ( 1 + \frac{u_\alpha \xi_{i \alpha}}{c_s^2} + \frac{u_\alpha u_\beta}{2 c_s^4} \left ( \xi_{i \alpha} \xi_{i \beta} - c_s^4 \delta_{\alpha \beta}\right ) \right )
+$$
+One explanation is that because we assume $\sigma = c_s$ and the $c_s^4 \delta_{\alpha \beta}$ is indeed a product of normalized scale $c_s$ and the variance: $c_s^2 \sigma^2 \delta_{\alpha \beta}$.
 
 \clearpage
 % --- End of page --- %
